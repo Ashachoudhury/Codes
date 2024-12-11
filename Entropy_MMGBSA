@@ -1,0 +1,70 @@
+!read topology and parameter
+stream toppar.str
+
+read psf card name step1_pdbreader.psf
+read coor card name step1_pdbreader.crd
+
+open unit 51 read unform name trajectory_0-1000ns_protein_nopbc-fit.dcd
+! specify how we are going to read the trajectory
+!---------------------------------
+TRAJectory QUER UNIT 51
+set tstrt ?START
+!set tstrt 500
+calc tend = @tstrt + ?NSTEP
+!set tend = 40
+traj first 51 nunit 1 begin @tstrt stop @tend
+set frame @tstrt
+!-----------Initialization of the variables
+!
+set n 0 ! snapshot counter
+set iframe 0
+!
+!-----------------------
+
+
+open write unit 15 form name entropy_1000ns.dat
+write title unit 15
+* entropy
+*
+
+
+
+! orient wrt mass weighted rms
+open write unit 10 unform name p53_1000-noh.dcd
+
+merge coor firstu 51 nunit 1 outputu 10  begin @tstrt stop @tend -
+sele (segid PROA) .and .not. hydrogen end -
+orie mass sele (segid PROA) .and .not. hydrogen end
+
+open read unit 10 unform name p53_500-noh.dcd
+
+!delete atom sele (segid SOLV .or. segid POT .or. segid CLA) end
+delete atom sele hydrogen end
+
+!Calculate average structure and copy to comparison set
+coor dyna firstu 10 nunit 1 begin @tstrt stop @tend -
+sele (segid PROA) .and .not. hydrogen end
+
+coor copy comp
+
+! Calculate number of vectors to use for vibrational analysis
+set nmod ?natom
+calc nmod = @nmod * 3
+
+vibran nmod @nmod
+
+quasi temp 300 firstu 10 nunit 1 begin @tstrt stop @tend
+
+thermo temp 300
+set stot ?stot
+
+end
+
+calc tds = 300 * @stot
+!calc dG = @avgemm + @avgdgpb + @avgdgasa - @tds
+
+write title unit 15
+* @tds
+*
+
+stop
