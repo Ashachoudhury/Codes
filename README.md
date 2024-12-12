@@ -1,1 +1,1 @@
-Here, the codes are provided which are useful for investigating bomolecular simulations. 
+This repository contains a collection of codes that are useful for investigating biomolecular simulations. 
