@@ -1,0 +1,6 @@
+cat ../temp.txt | while read replica temp;
+do
+#       rm -rf plumed$replica.dat
+#       sed -e 's/TEMP/'$temp'/g' plumed.dat > plumed$replica.dat
+        plumed driver --plumed plumed$replica.dat --mf_xtc ../eq$replica/eq$replica-nopbc-50ns.xtc --timestep 0.002
+done
