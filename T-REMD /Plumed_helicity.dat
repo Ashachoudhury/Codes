@@ -1,0 +1,6 @@
+#plumed options to calculate helicity
+MOLINFO STRUCTURE=step3_charmm2gmx.pdb
+ALPHARMSD RESIDUES=1-13  TYPE=DRMSD R_0=0.08 NN=8 MM=12 LABEL=a0
+PRINT ARG=a0 FILE=helicity-replica.txt
+#endofinput
+ENDPLUMED
