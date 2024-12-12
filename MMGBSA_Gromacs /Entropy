@@ -1,0 +1,10 @@
+&nmode
+  nmstartframe         = 25000                                              # First frame to analyze for normal modes
+  nmendframe           = 50000                                        # Last frame to analyze for normal modes
+  nminterval           = 1                                              # Interval to take snapshots for normal mode analysis
+  nmode_igb            = 1                                              # GB model to use for normal mode calculation
+  nmode_istrng         = 0.0                                            # Ionic strength for GB model (M)
+  dielc                = 1.0                                            # Dielectric constant
+  drms                 = 0.001                                          # Minimization gradient cutoff
+  maxcyc               = 10000                                          # Maximum number of minimization cycles
+/
